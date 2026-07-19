@@ -4,6 +4,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import ResumeModal from "./ResumeModal";
+import { StatusBadge, STATUS_OPTIONS } from "./statusBadge.jsx";
 
 const JobApplications = () => {
   const [applications, setApplications] = useState([]);
@@ -20,7 +21,7 @@ const JobApplications = () => {
     try {
       axios
         .get(
-          "http://localhost:4000/api/v1/application/TNP/getall?jobId=" + jobId,
+          "/api/v1/application/TNP/getall?jobId=" + jobId,
           {
             withCredentials: true,
           }
@@ -44,6 +45,22 @@ const JobApplications = () => {
     setModalOpen(true);
   };
 
+  const updateStatus = async (id, status) => {
+    try {
+      const { data } = await axios.put(
+        `/api/v1/application/status/${id}`,
+        { status },
+        { withCredentials: true }
+      );
+      toast.success(data.message);
+      setApplications((prev) =>
+        prev.map((app) => (app._id === id ? { ...app, status } : app))
+      );
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to update status");
+    }
+  };
+
   const closeModal = () => {
     setModalOpen(false);
   };
@@ -63,6 +80,7 @@ const JobApplications = () => {
                 element={element}
                 key={element._id}
                 openModal={openModal}
+                updateStatus={updateStatus}
               />
             );
           })
@@ -78,11 +96,14 @@ const JobApplications = () => {
 
 export default JobApplications;
 
-const TNPCard = ({ element, openModal }) => {
+const TNPCard = ({ element, openModal, updateStatus }) => {
   return (
     <>
       <div className="job_seeker_card">
         <div className="detail">
+          <p style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <span>Status:</span> <StatusBadge status={element.status} />
+          </p>
           <p>
             <span>Name:</span> {element.name}
           </p>
@@ -105,6 +126,29 @@ const TNPCard = ({ element, openModal }) => {
             alt="resume"
             onClick={() => openModal(element.resume.url)}
           />
+        </div>
+        <div
+          className="btn_area"
+          style={{ display: "flex", alignItems: "center", gap: "10px" }}
+        >
+          <label style={{ fontWeight: 600 }}>Update status:</label>
+          <select
+            value={element.status || "Applied"}
+            onChange={(e) => updateStatus(element._id, e.target.value)}
+            style={{
+              padding: "8px 12px",
+              borderRadius: "6px",
+              border: "1px solid #ccd4de",
+              fontSize: "15px",
+              cursor: "pointer",
+            }}
+          >
+            {STATUS_OPTIONS.map((s) => (
+              <option key={s} value={s}>
+                {s}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
     </>

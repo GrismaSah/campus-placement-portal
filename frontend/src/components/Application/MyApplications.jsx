@@ -4,6 +4,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import ResumeModal from "./ResumeModal";
+import { StatusBadge } from "./statusBadge.jsx";
 
 const MyApplications = () => {
   const [applications, setApplications] = useState([]);
@@ -17,7 +18,7 @@ const MyApplications = () => {
     try {
       if (user && user.role === "TNP") {
         axios
-          .get("http://localhost:4000/api/v1/job/getmyjobs", {
+          .get("/api/v1/job/getmyjobs", {
             withCredentials: true,
           })
           .then((res) => {
@@ -25,7 +26,7 @@ const MyApplications = () => {
           });
       } else if (user && user.role === "Student") {
         axios
-          .get("http://localhost:4000/api/v1/application/jobseeker/getall", {
+          .get("/api/v1/application/jobseeker/getall", {
             withCredentials: true,
           })
           .then((res) => {
@@ -33,7 +34,7 @@ const MyApplications = () => {
           });
       } else {
         axios
-          .get("http://localhost:4000/api/v1/tpo/pending-tnps", {
+          .get("/api/v1/tpo/pending-tnps", {
             withCredentials: true,
           })
           .then((res) => {
@@ -53,7 +54,7 @@ const MyApplications = () => {
   const deleteApplication = (id) => {
     try {
       axios
-        .delete(`http://localhost:4000/api/v1/application/delete/${id}`, {
+        .delete(`/api/v1/application/delete/${id}`, {
           withCredentials: true,
         })
         .then((res) => {
@@ -71,7 +72,7 @@ const MyApplications = () => {
     try {
       axios
         .post(
-          "http://localhost:4000/api/v1/tpo/tnp-request",
+          "/api/v1/tpo/tnp-request",
           { userId, action },
           {
             withCredentials: true,
@@ -188,6 +189,9 @@ const JobSeekerCard = ({ element, deleteApplication, openModal }) => {
       <div className="job_seeker_card">
         <div className="details">
           {" "}
+          <p style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            Status: <StatusBadge status={element.status} />
+          </p>
           <p>
             Company: <span>{element?.jobId?.company}</span>
           </p>

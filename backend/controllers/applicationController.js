@@ -194,3 +194,46 @@ export const jobseekerDeleteApplication = catchAsyncErrors(
 //         return res.status(500).json({ message: 'Error fetching application count', error });
 //     }
 // };
+
+// PUT /api/v1/application/status/:id  — TNP moves an application through the workflow
+export const updateApplicationStatus = catchAsyncErrors(
+  async (req, res, next) => {
+    const { role } = req.user;
+    if (role !== "TNP") {
+      return next(
+        new ErrorHandler("Only TNP can update application status.", 403)
+      );
+    }
+
+    const { status } = req.body;
+    const allowedStatuses = ["Applied", "Shortlisted", "Selected", "Rejected"];
+    if (!allowedStatuses.includes(status)) {
+      return next(new ErrorHandler("Invalid status value.", 400));
+    }
+
+    const application = await Application.findById(req.params.id);
+    if (!application) {
+      return next(new ErrorHandler("Application not found.", 404));
+    }
+
+    // Ownership check: a TNP may only update applications for jobs THEY posted.
+    if (application.TNPID.user.toString() !== req.user._id.toString()) {
+      return next(
+        new ErrorHandler(
+          "You can only update applications for your own job postings.",
+          403
+        )
+      );
+    }
+
+    application.status = status;
+    application.statusUpdatedAt = new Date();
+    await application.save();
+
+    res.status(200).json({
+      success: true,
+      message: `Application marked as ${status}.`,
+      application,
+    });
+  }
+);
