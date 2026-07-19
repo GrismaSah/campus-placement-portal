@@ -60,5 +60,11 @@ const jobSchema = new mongoose.Schema({
   },
 });
 
+// Indexes matching our most common query patterns:
+// - list pages filter on { expired } and sort by jobPostedOn (newest first)
+// - category/city filters narrow within non-expired jobs
+jobSchema.index({ expired: 1, jobPostedOn: -1 });
+jobSchema.index({ expired: 1, category: 1 });
+jobSchema.index({ expired: 1, city: 1 });
 
 export const Job = mongoose.model("Job", jobSchema);

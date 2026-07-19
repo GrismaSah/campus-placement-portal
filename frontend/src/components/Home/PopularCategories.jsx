@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   MdOutlineDesignServices,
   MdOutlineWebhook,
@@ -10,69 +11,70 @@ import { FaReact } from "react-icons/fa";
 import { GiArtificialIntelligence } from "react-icons/gi";
 import { IoGameController } from "react-icons/io5";
 
+// `title` must exactly match the category values jobs are posted with
+// (see the category <select> in PostJob.jsx) so the filter link works.
 const PopularCategories = () => {
   const categories = [
     {
-      id: 2,
-      title: "Mobile App Developer",
-      subTitle: "175+ Openings",
-      icon: <TbAppsFilled />,
-    },
-    {
       id: 1,
       title: "Data Analyst",
-      subTitle: "200+ Openings",
       icon: <MdOutlineDesignServices />,
     },
     {
+      id: 2,
+      title: "Mobile App Development",
+      icon: <TbAppsFilled />,
+    },
+    {
       id: 3,
-      title: "Frontend Developer",
-      subTitle: "250+ Openings",
+      title: "Frontend Development",
       icon: <MdOutlineWebhook />,
     },
     {
       id: 4,
-      title: "Web Developer",
-      subTitle: "180+ Openings",
+      title: "Web Development",
       icon: <FaReact />,
     },
     {
       id: 5,
-      title: "Business Analyst",
-      subTitle: "95+ Openings",
+      title: "Account & Finance",
       icon: <MdAccountBalance />,
     },
     {
       id: 6,
       title: "System Engineer",
-      subTitle: "120+ Openings",
       icon: <GiArtificialIntelligence />,
     },
     {
       id: 7,
       title: "Graduate Trainee",
-      subTitle: "300+ Openings",
       icon: <MdOutlineAnimation />,
     },
     {
       id: 8,
-      title: "Machine Learning Engineer",
-      subTitle: "85+ Openings",
+      title: "Machine Learning",
       icon: <IoGameController />,
     },
-  ];  return (
+  ];
+
+  return (
     <div className="categories">
       <h3>POPULAR CATEGORIES</h3>
       <div className="banner">
         {categories.map((element) => {
           return (
-            <div className="card" key={element.id}>
+            <Link
+              to={`/job/getall?category=${encodeURIComponent(element.title)}`}
+              className="card"
+              key={element.id}
+              style={{ textDecoration: "none", color: "inherit", cursor: "pointer" }}
+            >
               <div className="icon">{element.icon}</div>
               <div className="text">
                 <p>{element.title}</p>
-                <p>{element.subTitle}</p>
+                <p>View open roles →</p>
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>

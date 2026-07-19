@@ -6,11 +6,58 @@ import transporter from "../utils/email.config.js";
 import { NewJobPostedNotificationTemplate } from "../utils/NewJobPostedNotificationTemplate.js";
 import { User } from "../models/userSchema.js";
 
+// GET /api/v1/job/getall?keyword=&category=&city=&minSalary=&maxSalary=&page=&limit=
 export const getAllJobs = catchAsyncErrors(async (req, res, next) => {
-  const jobs = await Job.find({ expired: false });
+  const { keyword, category, city, minSalary, maxSalary } = req.query;
+
+  const page = Math.max(1, parseInt(req.query.page, 10) || 1);
+  const limit = Math.min(24, Math.max(1, parseInt(req.query.limit, 10) || 9));
+
+  // Escape user input so it can't be interpreted as a regex pattern
+  const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+  const filters = [{ expired: false }];
+
+  if (keyword) {
+    const rx = new RegExp(escapeRegex(keyword), "i");
+    filters.push({ $or: [{ title: rx }, { company: rx }, { description: rx }] });
+  }
+  if (category) {
+    filters.push({ category });
+  }
+  if (city) {
+    filters.push({ city: new RegExp(escapeRegex(city), "i") });
+  }
+  if (minSalary || maxSalary) {
+    const min = Number(minSalary) || 0;
+    const max = Number(maxSalary) || Number.MAX_SAFE_INTEGER;
+    // A job matches if its fixed salary is inside [min, max],
+    // OR its salary range [salaryFrom, salaryTo] overlaps [min, max]
+    filters.push({
+      $or: [
+        { fixedSalary: { $gte: min, $lte: max } },
+        { salaryFrom: { $lte: max }, salaryTo: { $gte: min } },
+      ],
+    });
+  }
+
+  const query = filters.length > 1 ? { $and: filters } : filters[0];
+
+  // Run the page query and the total count in parallel
+  const [jobs, totalJobs] = await Promise.all([
+    Job.find(query)
+      .sort({ jobPostedOn: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit),
+    Job.countDocuments(query),
+  ]);
+
   res.status(200).json({
     success: true,
     jobs,
+    totalJobs,
+    totalPages: Math.ceil(totalJobs / limit) || 1,
+    currentPage: page,
   });
 });
 
