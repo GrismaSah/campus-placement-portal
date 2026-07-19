@@ -8,6 +8,7 @@ import axios from "axios";
 import LoaderPage from "./components/Loader/LoaderPage.jsx";
 import Navbar from "./components/Layout/Navbar";
 import Footer from "./components/Layout/Footer";
+import ProtectedRoute from "./components/Auth/ProtectedRoute.jsx";
 const ForgotPassword = lazy(() => import("./components/Forgot/ForgotPassword.jsx"));
 
 const Login = lazy(() => import("./components/Auth/Login"));
@@ -27,14 +28,15 @@ const JobApplications = lazy(() =>
 );
 const TPOLogin = lazy(() => import("./components/TPO/Login"));
 const TPORegister = lazy(() => import("./components/TPO/Register"));
+const Profile = lazy(() => import("./components/Profile/Profile.jsx"));
 
 
-axios.defaults.baseURL = "http://localhost:4000";
+axios.defaults.baseURL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+axios.defaults.withCredentials = true;
 
 const App = () => {
-  const { isAuthorized, setIsAuthorized, setUser, user } = useContext(Context);
-  
-
+  const { isAuthorized, setIsAuthorized, setUser, user, setAuthLoading } =
+    useContext(Context);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -59,11 +61,11 @@ const App = () => {
         setIsAuthorized(true);
       } catch (error) {
         setIsAuthorized(false);
+      } finally {
+        setAuthLoading(false);
       }
     };
     fetchUser();
-    console.log(user);
-    
   }, [isAuthorized]);
 
   return (
@@ -75,13 +77,70 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/" element={<Home />} />
-            <Route path="/job/getall" element={<Jobs />} />
-            <Route path="/job/:id" element={<JobDetails />} />
-            <Route path="/application/:id" element={<Application />} />
-            <Route path="/applications/me" element={<MyApplications />} />
-            <Route path="/applications/:jobId" element={<JobApplications />} />
-            <Route path="/job/post" element={<PostJob />} />
-            <Route path="/job/me" element={<MyJobs />} />
+            <Route
+              path="/job/getall"
+              element={
+                <ProtectedRoute>
+                  <Jobs />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/job/:id"
+              element={
+                <ProtectedRoute>
+                  <JobDetails />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/application/:id"
+              element={
+                <ProtectedRoute roles={["Student"]}>
+                  <Application />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/applications/me"
+              element={
+                <ProtectedRoute roles={["Student", "TNP"]}>
+                  <MyApplications />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/applications/:jobId"
+              element={
+                <ProtectedRoute roles={["TNP"]}>
+                  <JobApplications />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/job/post"
+              element={
+                <ProtectedRoute roles={["TNP"]}>
+                  <PostJob />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/job/me"
+              element={
+                <ProtectedRoute roles={["TNP"]}>
+                  <MyJobs />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute roles={["Student", "TNP"]}>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/tpo/login" element={<TPOLogin />} />
             <Route path="/tpo/register" element={<TPORegister />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />

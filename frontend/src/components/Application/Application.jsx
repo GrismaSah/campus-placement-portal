@@ -14,6 +14,7 @@ const Application = () => {
   const [phone, setPhone] = useState(user.phone);
   const [address, setAddress] = useState(user.address);
   const [resume, setResume] = useState(null);
+  const [useSavedResume, setUseSavedResume] = useState(!!user?.resume?.url);
   const [loading, setLoading] = useState(false);
 
   const navigateTo = useNavigate();
@@ -35,12 +36,21 @@ const Application = () => {
     formData.append("phone", phone);
     formData.append("address", address);
     formData.append("coverLetter", coverLetter);
-    formData.append("resume", resume);
+    // If reusing the saved profile resume, send no file —
+    // the backend falls back to the resume stored on the profile.
+    if (!useSavedResume) {
+      if (!resume) {
+        toast.error("Please select a resume file or use your saved resume.");
+        setLoading(false);
+        return;
+      }
+      formData.append("resume", resume);
+    }
     formData.append("jobId", id);
 
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/api/v1/application/post",
+        "/api/v1/application/post",
         formData,
         {
           withCredentials: true,
@@ -109,14 +119,44 @@ const Application = () => {
             <label
               style={{ textAlign: "start", display: "block", fontSize: "20px" }}
             >
-              Select Resume
+              Resume
             </label>
-            <input
-              type="file"
-              accept=".pdf, .jpg, .png"
-              onChange={handleFileChange}
-              style={{ width: "100%" }}
-            />
+            {user?.resume?.url && (
+              <label
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  margin: "8px 0",
+                  fontSize: "15px",
+                  cursor: "pointer",
+                }}
+              >
+                <input
+                  type="checkbox"
+                  checked={useSavedResume}
+                  onChange={(e) => setUseSavedResume(e.target.checked)}
+                  style={{ width: "auto" }}
+                />
+                Use my saved resume{" "}
+                <a
+                  href={user.resume.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ fontSize: "13px" }}
+                >
+                  (view)
+                </a>
+              </label>
+            )}
+            {!useSavedResume && (
+              <input
+                type="file"
+                accept=".pdf, .jpg, .png"
+                onChange={handleFileChange}
+                style={{ width: "100%" }}
+              />
+            )}
           </div>
           <button type="submit" disabled={loading}>
             {loading ? "Sending..." : "Send Application"}

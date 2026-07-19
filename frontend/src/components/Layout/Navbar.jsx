@@ -13,7 +13,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:4000/api/v1/user/logout",
+        "/api/v1/user/logout",
         {
           withCredentials: true,
         }
@@ -72,6 +72,30 @@ const Navbar = () => {
             </>
           ) : (
             <></>
+          )}
+
+          {user && user.role !== "TPO" && (
+            <li>
+              <Link
+                to={"/profile"}
+                onClick={() => setShow(false)}
+                style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}
+              >
+                {user?.profilePicture?.url && (
+                  <img
+                    src={user.profilePicture.url}
+                    alt="me"
+                    style={{
+                      width: "26px",
+                      height: "26px",
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                    }}
+                  />
+                )}
+                PROFILE
+              </Link>
+            </li>
           )}
 
           <button onClick={handleLogout}>LOGOUT</button>

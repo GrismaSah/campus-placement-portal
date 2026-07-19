@@ -31,13 +31,20 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please provide a Password!"],
     minLength: [8, "Password must contain at least 8 characters!"],
-    // maxLength: [32, "Password cannot exceed 32 characters!"],
-    // select: false,
+    select: false,
   },
   role: {
     type: String,
     required: [true, "Please select a role"],
     enum: ["Student", "TNP"],
+  },
+  profilePicture: {
+    public_id: { type: String },
+    url: { type: String },
+  },
+  resume: {
+    public_id: { type: String },
+    url: { type: String },
   },
   isVerified: {
     type: Boolean,

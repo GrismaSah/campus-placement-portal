@@ -13,28 +13,46 @@ export const postApplication = catchAsyncErrors(async (req, res, next) => {
     );
   }
 
-  if (!req.files || Object.keys(req.files).length === 0) {
-    return next(new ErrorHandler("Resume File Required!", 400));
-  }
+  // Resume source: a freshly uploaded file, OR the student's saved profile resume
+  let resumeData = null;
 
-  const { resume } = req.files;
-  const allowedFormats = ["image/png", "image/jpeg", "image/webp"];
-  if (!allowedFormats.includes(resume.mimetype)) {
+  if (req.files && req.files.resume) {
+    const { resume } = req.files;
+    const allowedFormats = ["image/png", "image/jpeg", "image/webp"];
+    if (!allowedFormats.includes(resume.mimetype)) {
+      return next(
+        new ErrorHandler("Invalid file type. Please upload a PNG file.", 400)
+      );
+    }
+
+    const cloudinaryResponse = await cloudinary.uploader.upload(
+      resume.tempFilePath
+    );
+
+    if (!cloudinaryResponse || cloudinaryResponse.error) {
+      console.error(
+        "Cloudinary Error:",
+        cloudinaryResponse.error || "Unknown Cloudinary error"
+      );
+      return next(new ErrorHandler("Failed to upload Resume to Cloudinary", 500));
+    }
+    resumeData = {
+      public_id: cloudinaryResponse.public_id,
+      url: cloudinaryResponse.secure_url,
+    };
+  } else if (req.user.resume && req.user.resume.url) {
+    // Reuse the resume saved on the student's profile
+    resumeData = {
+      public_id: req.user.resume.public_id,
+      url: req.user.resume.url,
+    };
+  } else {
     return next(
-      new ErrorHandler("Invalid file type. Please upload a PNG file.", 400)
+      new ErrorHandler(
+        "Resume required! Upload a file or save one on your profile first.",
+        400
+      )
     );
-  }
-
-  const cloudinaryResponse = await cloudinary.uploader.upload(
-    resume.tempFilePath
-  );
-
-  if (!cloudinaryResponse || cloudinaryResponse.error) {
-    console.error(
-      "Cloudinary Error:",
-      cloudinaryResponse.error || "Unknown Cloudinary error"
-    );
-    return next(new ErrorHandler("Failed to upload Resume to Cloudinary", 500));
   }
 
   const { name, email, coverLetter, phone, address, jobId, enrollment } =
@@ -66,7 +84,7 @@ export const postApplication = catchAsyncErrors(async (req, res, next) => {
     !address ||
     !applicantID ||
     !TNPID ||
-    !resume ||
+    !resumeData ||
     !enrollment
   ) {
     return next(new ErrorHandler("Please fill all fields.", 400));
@@ -96,10 +114,7 @@ export const postApplication = catchAsyncErrors(async (req, res, next) => {
     applicantID,
     TNPID,
     jobId,
-    resume: {
-      public_id: cloudinaryResponse.public_id,
-      url: cloudinaryResponse.secure_url,
-    },
+    resume: resumeData,
   });
 
   res.status(200).json({
