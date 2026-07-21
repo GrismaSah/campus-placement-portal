@@ -31,11 +31,10 @@ const Navbar = () => {
       <div className="container">
         <div className="heading">
           <div className="logo">
-            <img src="/nita.png" alt="logo" />
+            <img src="/logo.png" alt="JAIN University logo" />
           </div>
           <div className="letter">
-            National Institute of Technology Agartala
-            <br /> राष्ट्रीय प्रौद्योगिकी संस्थान अगरतला
+            JAIN (Deemed-to-be University)
           </div>
         </div>
         <ul className={!show ? "menu" : "show-menu menu"}>

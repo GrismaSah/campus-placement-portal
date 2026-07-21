@@ -5,7 +5,7 @@ export const DeclineTnpRequestTemplate = (tnpName) => {
           <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="background-color: #ffffff; border: 1px solid #dddddd; padding: 20px;">
             <tr>
               <td align="center" style="padding: 10px 0;">
-                <h1 style="color: #d9534f;">NITA Placement Cell</h1>
+                <h1 style="color: #d9534f;">JAIN University Placement Cell</h1>
               </td>
             </tr>
             <tr>
@@ -25,7 +25,7 @@ export const DeclineTnpRequestTemplate = (tnpName) => {
               <td>
                 <p style="font-size: 16px; line-height: 1.5; color: #666;">
                   Best regards,<br>
-                  NITA Training and Placement Office
+                  JAIN Training and Placement Office
                 </p>
               </td>
             </tr>
@@ -44,7 +44,7 @@ export const DeclineTnpRequestTemplate = (tnpName) => {
           <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="background-color: #ffffff; border: 1px solid #dddddd; padding: 20px;">
             <tr>
               <td align="center" style="padding: 10px 0;">
-                <h1 style="color: #5cb85c;">NITA Placement Cell</h1>
+                <h1 style="color: #5cb85c;">JAIN University Placement Cell</h1>
               </td>
             </tr>
             <tr>
@@ -64,7 +64,7 @@ export const DeclineTnpRequestTemplate = (tnpName) => {
               <td>
                 <p style="font-size: 16px; line-height: 1.5; color: #666;">
                   Best regards,<br>
-                  NITA Training and Placement Office
+                  JAIN Training and Placement Office
                 </p>
               </td>
             </tr>

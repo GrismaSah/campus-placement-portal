@@ -120,7 +120,7 @@ const Login = () => {
     <section className="authPage">
       <div className="container">
         <div className="header">
-          <img src="./nita.png" alt="logo" />
+          <img src="./logo.png" alt="JAIN University logo" />
           <h3>Login to your account</h3>
         </div>
         {isStudentNotVerified ? (

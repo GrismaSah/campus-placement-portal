@@ -12,7 +12,7 @@ export const Register_Successful_Template = (doc) => `
         <hr style="border: none; border-top: 1px solid #ccc; margin: 20px 0;">
         <p>If you have any questions or need assistance, feel free to reach out to our support team.</p>
         <p>Best Regards,</p>
-        <p><strong>Team NITA Placement Cell</strong></p>
+        <p><strong>Team JAIN University Placement Cell</strong></p>
         <p style="font-size: 12px; text-align: center; color: #aaa;">This is an automated email. Please do not reply.</p>
       </div>
     </body>

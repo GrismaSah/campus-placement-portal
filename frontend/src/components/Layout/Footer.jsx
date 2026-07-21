@@ -31,23 +31,23 @@ const Footer = () => {
               </Link>
             </li>
             <li>
-              <Link to="https://nita.ac.in/">Contact</Link>
+              <Link to="https://www.jainuniversity.ac.in/">Contact</Link>
             </li>
           </ul>
         </div>
         <div className="footer-section">
           <h3>Connect With Us</h3>
           <div className="social-links">
-            <a href="https://www.facebook.com/profile.php?id=61564880039705">
+            <a href="https://www.facebook.com/JAINDeemedtobeUniversityofficial/">
               <FaFacebookF />
             </a>
-            <a href="https://www.instagram.com/nitagartalaofficial">
+            <a href="https://www.instagram.com/jainuniversityofficial/">
               <RiInstagramFill />
             </a>
-            <a href="https://www.youtube.com/@nitagartalaofficialchannel2272">
+            <a href="https://www.youtube.com/channel/UCmKs5HVxglWe5s8vYw2BbQQ">
               <FaYoutube />
             </a>
-            <a href="https://www.linkedin.com/school/national-institute-of-technology-agartala">
+            <a href="https://www.linkedin.com/school/jaindeemedtobeuniversity/">
               <FaLinkedin />
             </a>
           </div>

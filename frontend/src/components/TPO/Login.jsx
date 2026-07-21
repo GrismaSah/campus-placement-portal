@@ -5,7 +5,7 @@ import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Context } from "../../main";
-import nitaLogo from "../../../public/nita.png";
+import jainLogo from "../../../public/logo.png";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -98,7 +98,7 @@ const Login = () => {
       <section className="authPage">
         <div className="container">
           <div className="header">
-            <img src={nitaLogo} alt="logo" />
+            <img src={jainLogo} alt="JAIN University logo" />
             <h3>Login as TPO</h3>
           </div>
           <form onSubmit={handleLogin}>

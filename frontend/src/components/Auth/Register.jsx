@@ -127,7 +127,7 @@ const Register = () => {
       <section className="authPage">
         <div className="container">
           <div className="header">
-            <img src="./nita.png" alt="logo" />
+            <img src="./logo.png" alt="JAIN University logo" />
             <h3>Create a new account</h3>
           </div>
           {verify ? (

@@ -5,7 +5,7 @@ export const  NewJobPostedNotificationTemplate = (doc, studentName) =>{
           <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="background-color: #ffffff; border: 1px solid #dddddd; padding: 20px;">
             <tr>
               <td align="center" style="padding: 10px 0;">
-                <h1 style="color: #007bff;">NITA Placement Cell</h1>
+                <h1 style="color: #007bff;">JAIN University Placement Cell</h1>
               </td>
             </tr>
             <tr>
@@ -26,7 +26,7 @@ export const  NewJobPostedNotificationTemplate = (doc, studentName) =>{
                   <li><strong>Posted On:</strong> ${new Date(doc.jobPostedOn).toLocaleDateString()}</li>
                 </ul>
                 <p style="font-size: 16px; line-height: 1.5; color: #333;">
-                  Visit the NITA Placement Cell portal for more details and to apply.
+                  Visit the JAIN University Placement Cell portal for more details and to apply.
                 </p>
               </td>
             </tr>
@@ -42,7 +42,7 @@ export const  NewJobPostedNotificationTemplate = (doc, studentName) =>{
               <td>
                 <p style="font-size: 16px; line-height: 1.5; color: #666;">
                   Best regards,<br>
-                  NITA Placement Cell Team
+                  JAIN University Placement Cell Team
                 </p>
               </td>
             </tr>

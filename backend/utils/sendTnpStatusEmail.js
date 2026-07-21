@@ -3,10 +3,10 @@ import { ApprovalTnpRequestTemplate, DeclineTnpRequestTemplate } from "./emailTe
 
 export const sendTnpStatusEmailApproved = async (doc) => {
   const mailOptions = {
-    from: `"NITA-PLACEMENT-CELL" <${process.env.NODEMAIL_EMAIL}>`,
+    from: `"JAIN-PLACEMENT-CELL" <${process.env.NODEMAIL_EMAIL}>`,
     to: doc.email,
     subject: "TNP Request Approved",
-    text: `Dear ${doc.name},\n\nYour TNP request has been approved. Please proceed with the next steps or contact the TPO for further guidance.\n\nBest regards,\nNITA Placement Cell`,
+    text: `Dear ${doc.name},\n\nYour TNP request has been approved. Please proceed with the next steps or contact the TPO for further guidance.\n\nBest regards,\nJAIN University Placement Cell`,
     html: ApprovalTnpRequestTemplate(doc.name),
   };
   try {
@@ -20,10 +20,10 @@ export const sendTnpStatusEmailApproved = async (doc) => {
 
 export const sendTnpStatusEmailDeclined = async (doc) => {
   const mailOptions = {
-    from: `"NITA-PLACEMENT-CELL" <${process.env.NODEMAIL_EMAIL}>`,
+    from: `"JAIN-PLACEMENT-CELL" <${process.env.NODEMAIL_EMAIL}>`,
     to: doc.email,
     subject: "TNP Request Declined",
-    text: `Dear ${doc.name},\n\nWe regret to inform you that your TNP request has been declined. Please contact the TPO for further clarification.\n\nBest regards,\nNITA Placement Cell`,
+    text: `Dear ${doc.name},\n\nWe regret to inform you that your TNP request has been declined. Please contact the TPO for further clarification.\n\nBest regards,\nJAIN University Placement Cell`,
     html: DeclineTnpRequestTemplate(doc.name),
   };
   try {

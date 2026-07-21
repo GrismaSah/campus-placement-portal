@@ -7,7 +7,7 @@ export const sendVerificationCode = async (email, verificationCode) => {
     // console.log("Verification code:", verificationCode);
   try {
     const response = await transporter.sendMail({
-      from: `"NITA-PLACEMENT-CELL" <${process.env.NODEMAIL_EMAIL}>`, // sender address
+      from: `"JAIN-PLACEMENT-CELL" <${process.env.NODEMAIL_EMAIL}>`, // sender address
       to: email, // list of receivers
       subject: "Verify Your Email", // Subject line
       text: "Verify Your Email", // plain text body

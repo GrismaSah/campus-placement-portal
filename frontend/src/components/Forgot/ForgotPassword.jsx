@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { RiLock2Fill } from "react-icons/ri";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
-import nitaLogo from "../../../public/nita.png";
+import jainLogo from "../../../public/logo.png";
 import toast from "react-hot-toast";
 import axios from "axios";
 
@@ -159,7 +159,7 @@ const ForgotPassword = () => {
       <section className="authPage">
         <div className="container">
           <div className="header">
-            <img src={nitaLogo} alt="logo" />
+            <img src={jainLogo} alt="JAIN University logo" />
             <h3>Reset Password</h3>
           </div>
           {showVerification ? (

@@ -1551,8 +1551,9 @@ nav .container .logo {
   align-items: center;
 }
 nav .container .logo img {
-  width: 70%;
-  height: 75%;
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
 }
 nav .menu {
   display: flex;

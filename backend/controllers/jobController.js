@@ -124,7 +124,7 @@ export const postJob = catchAsyncErrors(async (req, res, next) => {
     
     for (const student of students) {
       const mailOptions = {
-        from: `"NITA-PLACEMENT-CELL" <${process.env.NODEMAIL_EMAIL}>`,
+        from: `"JAIN-PLACEMENT-CELL" <${process.env.NODEMAIL_EMAIL}>`,
         to: student.email,
         subject: "New Job Posted",
         html: NewJobPostedNotificationTemplate(job, student.name), // Ensure 'job' is passed correctly
