@@ -49,14 +49,15 @@ const Navbar = () => {
               ALL JOBS
             </Link>
           </li>
-          <li>
-            <Link to={"/applications/me"} onClick={() => setShow(false)}>
-              {user && user?.role === "TNP"
-                ? "STUDENT'S APPLICATIONS"
-                : user?.role === "Student" ? "MY APPLICATIONS":
-                "Pending TNPs"}
-            </Link>
-          </li>
+          {user && user.role !== "TPO" && (
+            <li>
+              <Link to={"/applications/me"} onClick={() => setShow(false)}>
+                {user?.role === "TNP"
+                  ? "STUDENT'S APPLICATIONS"
+                  : "MY APPLICATIONS"}
+              </Link>
+            </li>
+          )}
           {user && user.role === "TNP" ? (
             <>
               <li>
@@ -74,6 +75,13 @@ const Navbar = () => {
             <></>
           )}
 
+          {user && user.role === "TPO" && (
+            <li>
+              <Link to={"/tpo/dashboard"} onClick={() => setShow(false)}>
+                DASHBOARD
+              </Link>
+            </li>
+          )}
           {user && user.role !== "TPO" && (
             <li>
               <Link

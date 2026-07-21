@@ -6,6 +6,8 @@ import { User } from "../models/userSchema.js";
 import { sendVerificationCode } from "../utils/verifyEmail/email.js";
 import { sentRegisteredEmail } from "../utils/registeredUser/register.js";
 import { sendTnpStatusEmailApproved, sendTnpStatusEmailDeclined } from "../utils/sendTnpStatusEmail.js";
+import { Job } from "../models/jobSchema.js";
+import { Application } from "../models/applicationSchema.js";
 
 export const registerTPO = catchAsyncErrors(async (req, res, next) => {
     const { firstname, lastname, email, phone, password } = req.body;
@@ -20,24 +22,16 @@ export const registerTPO = catchAsyncErrors(async (req, res, next) => {
   if (isEmail) {
     return next(new ErrorHandler("Email already registered!"));
   }
-  const verificationCode = Math.floor(
-    100000 + Math.random() * 900000
-  ).toString();
   const tpo = await TPO.create({
     firstname,
     lastname,
     email,
     phone,
     password,
-    verificationCode,
+    isVerified: true,
   });
-  sendVerificationCode(email, verificationCode);
 
-  res.status(200).json({
-    success: true,
-    message: "Verification code sent to your email. Please check your inbox.",
-    tpo,
-  });
+  sendToken(tpo, 201, res, "TPO Registered Successfully!");
 });
 
 export const loginTPO = catchAsyncErrors(async (req, res, next) => {
@@ -51,21 +45,16 @@ export const loginTPO = catchAsyncErrors(async (req, res, next) => {
   if (!tpo) {
     return next(new ErrorHandler("Invalid Email.", 400));
   }
-  if (tpo.verificationCode !== verificationCode) {
-    return next(new ErrorHandler("Invalid verification code.", 400));
-  }
-
   const isPasswordMatched = await tpo.comparePassword(password);
   if (!isPasswordMatched) {
     return next(new ErrorHandler("Invalid Password.", 400));
   }
-  if(tpo.isVerified === false) {
-    sentRegisteredEmail(tpo);
-
+  // Email verification removed: correct email + password is enough.
+  if (tpo.isVerified === false) {
+    tpo.isVerified = true;
+    tpo.verificationCode = null;
+    await tpo.save();
   }
-  tpo.verificationCode = null;
-  tpo.isVerified = true;
-  await tpo.save();
 
   sendToken(tpo, 200, res, "TPO Logged In!");
 });
@@ -239,4 +228,48 @@ export const updatePasswordTPO = catchAsyncErrors(async (req, res, next) => {
   user.password = newPassword;
   await user.save();
   sendToken(user, 201, res, "Password updated successfully.");
+});
+// GET /api/v1/tpo/dashboard-stats — aggregated platform metrics for the admin dashboard
+export const getDashboardStats = catchAsyncErrors(async (req, res, next) => {
+  const [
+    students,
+    tnpsApproved,
+    tnpsPending,
+    totalJobs,
+    openJobs,
+    totalApplications,
+    applicationsByStatus,
+    jobsByCategory,
+  ] = await Promise.all([
+    User.countDocuments({ role: "Student" }),
+    User.countDocuments({ role: "TNP", status: "Approved" }),
+    User.countDocuments({ role: "TNP", status: "Pending" }),
+    Job.countDocuments(),
+    Job.countDocuments({ expired: false }),
+    Application.countDocuments(),
+    Application.aggregate([
+      // Applications created before the status feature have no status field
+      { $group: { _id: { $ifNull: ["$status", "Applied"] }, count: { $sum: 1 } } },
+      { $project: { _id: 0, status: "$_id", count: 1 } },
+    ]),
+    Job.aggregate([
+      { $group: { _id: "$category", count: { $sum: 1 } } },
+      { $project: { _id: 0, category: "$_id", count: 1 } },
+      { $sort: { count: -1 } },
+    ]),
+  ]);
+
+  res.status(200).json({
+    success: true,
+    stats: {
+      students,
+      tnpsApproved,
+      tnpsPending,
+      totalJobs,
+      openJobs,
+      totalApplications,
+      applicationsByStatus,
+      jobsByCategory,
+    },
+  });
 });

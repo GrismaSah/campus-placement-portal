@@ -26,7 +26,7 @@ const Footer = () => {
               </a>
             </li>
             <li>
-              <Link to="https://nita.ac.in/UserPanel/DisplayPage.aspx?page=c&ItemID=m">
+              <Link to="https://jgigroup.in/btech2026/?utm_source=Google+&utm_medium=Google+Paid+&utm_campaign=Google+BTech+Application+&utm_term=Google+Paid+&gad_source=1&gad_campaignid=23336348824&gbraid=0AAAAADD5sBqS1A1qw--kW7PIVU8y9HXmX&gclid=CjwKCAjwsfzSBhB5EiwAOGyqSdEvhZVibUxxi43yLsEc2JlcU75AITb9De80f_ds1eM8fl62AIXvXRoCql0QAvD_BwE">
                 About
               </Link>
             </li>

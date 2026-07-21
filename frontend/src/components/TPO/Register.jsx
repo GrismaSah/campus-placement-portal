@@ -42,7 +42,7 @@ const Register = () => {
     setLoader(true);
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/api/v1/tpo/register",
+        "/api/v1/tpo/register",
         { firstname, lastname, phone, email, password },
         {
           headers: {
@@ -52,8 +52,12 @@ const Register = () => {
         }
       );
       toast.success(data.message);
-      setVerify(true);
-      setTimer(60);
+      setFirstname("");
+      setLastname("");
+      setEmail("");
+      setPhone("");
+      setPassword("");
+      setIsAuthorized(true);
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
@@ -64,7 +68,7 @@ const Register = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/api/v1/tpo/verify",
+        "/api/v1/tpo/verify",
         { email, verificationCode },
         {
           headers: {
@@ -89,7 +93,7 @@ const Register = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/api/v1/tpo/generate-code",
+        "/api/v1/tpo/generate-code",
         { email },
         {
           headers: {

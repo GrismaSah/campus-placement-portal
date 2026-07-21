@@ -38,7 +38,7 @@ const Login = () => {
       }
 
       const resp = await axios.post(
-        "http://localhost:4000/api/v1/tpo/generate-code",
+        "/api/v1/tpo/generate-code",
         { email },
         {
           headers: {
@@ -57,14 +57,14 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      if (!email || !password || !verificationCode) {
+      if (!email || !password) {
         toast.error("Please fill all fields");
         return;
       }
 
       const resp = await axios.post(
-        "http://localhost:4000/api/v1/tpo/login",
-        { email, password, verificationCode },
+        "/api/v1/tpo/login",
+        { email, password },
         {
           headers: {
             "Content-Type": "application/json",
@@ -113,22 +113,6 @@ const Login = () => {
                   onChange={(e) => setEmail(e.target.value)}
                 />
                 <MdOutlineMailOutline />
-              </div>
-            </div>
-
-            <div className="inputTag">
-              <label>Verification Code</label>
-              <div>
-                <input
-                  type="text"
-                  placeholder="Enter verification code"
-                  value={verificationCode}
-                  required
-                  onChange={(e) => setVerificationCode(e.target.value)}
-                />
-                <button type="button" onClick={handleSendVerification}>
-                  {timer > 0 ? `Wait ${timer}s` : showVerification ? "Resend Code" : "Send Code"}
-                </button>
               </div>
             </div>
 

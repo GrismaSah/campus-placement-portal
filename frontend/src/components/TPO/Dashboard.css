@@ -1,0 +1,179 @@
+.tpoDashboard {
+  min-height: 85vh;
+  background: #f5f7fa;
+  padding: 36px 20px;
+}
+
+.dashContainer {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.dashContainer h1 {
+  text-align: center;
+  color: #1f2d3d;
+  margin-bottom: 30px;
+}
+
+.dashLoading {
+  text-align: center;
+  padding: 80px 0;
+  font-size: 18px;
+  color: #667;
+}
+
+/* ---- Stat cards ---- */
+.statCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.statCard {
+  background: #fff;
+  border: 1px solid #e3e8ef;
+  border-radius: 10px;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.statIcon {
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  background: #e8eef9;
+  color: #2a5aa8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.statValue {
+  font-size: 26px;
+  font-weight: 800;
+  color: #1f2d3d;
+  line-height: 1.1;
+}
+
+.statLabel {
+  font-size: 13px;
+  color: #667;
+}
+
+/* ---- Charts ---- */
+.chartsRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.chartCard {
+  background: #fff;
+  border: 1px solid #e3e8ef;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.chartCard h2 {
+  font-size: 17px;
+  color: #1f2d3d;
+  margin-bottom: 12px;
+}
+
+.chartEmpty {
+  color: #889;
+  padding: 40px 0;
+  text-align: center;
+}
+
+/* ---- Pending TNP table ---- */
+.pendingSection {
+  background: #fff;
+  border: 1px solid #e3e8ef;
+  border-radius: 10px;
+  padding: 22px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.pendingSection h2 {
+  font-size: 17px;
+  color: #1f2d3d;
+  margin-bottom: 14px;
+}
+
+.tableEmpty {
+  color: #556;
+  padding: 20px 0;
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.pendingSection table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.pendingSection th,
+.pendingSection td {
+  text-align: left;
+  padding: 12px 14px;
+  border-bottom: 1px solid #eef1f5;
+}
+
+.pendingSection th {
+  background: #f7f9fc;
+  color: #445;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.actionBtns {
+  display: flex;
+  gap: 8px;
+}
+
+.approveBtn,
+.declineBtn {
+  padding: 7px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.approveBtn {
+  background: #1a9e5c;
+  color: #fff;
+}
+
+.approveBtn:hover {
+  background: #158a4f;
+}
+
+.declineBtn {
+  background: #fdeaea;
+  color: #b3352e;
+}
+
+.declineBtn:hover {
+  background: #f8d7d5;
+}
+
+@media (max-width: 800px) {
+  .chartsRow {
+    grid-template-columns: 1fr;
+  }
+}

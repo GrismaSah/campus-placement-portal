@@ -29,6 +29,7 @@ const JobApplications = lazy(() =>
 const TPOLogin = lazy(() => import("./components/TPO/Login"));
 const TPORegister = lazy(() => import("./components/TPO/Register"));
 const Profile = lazy(() => import("./components/Profile/Profile.jsx"));
+const TPODashboard = lazy(() => import("./components/TPO/Dashboard.jsx"));
 
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL || "http://localhost:4000";
@@ -142,6 +143,14 @@ const App = () => {
               }
             />
             <Route path="/tpo/login" element={<TPOLogin />} />
+            <Route
+              path="/tpo/dashboard"
+              element={
+                <ProtectedRoute roles={["TPO"]}>
+                  <TPODashboard />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/tpo/register" element={<TPORegister />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="*" element={<NotFound />} />
